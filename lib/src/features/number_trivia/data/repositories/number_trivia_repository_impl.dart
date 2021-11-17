@@ -1,7 +1,7 @@
 import 'package:fpdart/src/either.dart';
 import 'package:number_trivia/src/core/error/exceptions.dart';
 import 'package:number_trivia/src/core/error/failures.dart';
-import 'package:number_trivia/src/core/platform/network_info.dart';
+import 'package:number_trivia/src/core/network/network_info.dart';
 import 'package:number_trivia/src/features/number_trivia/data/data_sources/number_trivia_local_data_source.dart';
 import 'package:number_trivia/src/features/number_trivia/data/data_sources/number_trivia_remote_data_source.dart';
 import 'package:number_trivia/src/features/number_trivia/data/models/number_trivia_model.dart';

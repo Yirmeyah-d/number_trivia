@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'features/number_trivia/presentation/views/number_trivia_view.dart';
 import 'features/settings/settings_controller.dart';
 import 'features/settings/settings_view.dart';
 
@@ -54,7 +55,13 @@ class MyApp extends StatelessWidget {
           // Define a light and dark color theme. Then, read the user's
           // preferred ThemeMode (light, dark, or system default) from the
           // SettingsController to display the correct theme.
-          theme: ThemeData(),
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSwatch(
+              primarySwatch: Colors.green,
+            ).copyWith(
+              secondary: Colors.lightGreen,
+            ),
+          ),
           darkTheme: ThemeData.dark(),
           themeMode: settingsController.themeMode,
 
@@ -68,7 +75,7 @@ class MyApp extends StatelessWidget {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
                   default:
-                    return SettingsView(controller: settingsController);
+                    return NumberTriviaView();
                 }
               },
             );

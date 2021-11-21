@@ -8,7 +8,7 @@ import 'injection_container.dart' as di;
 //TODO : Ajouter Widget Test
 //TODO : Améliorer l'UI pour gérer des animations
 //TODO : Revoir l'écriture de certains tests
-
+//TODO : Solve conflict
 void main() async {
   await di.init();
   // Set up the SettingsController, which will glue user settings to multiple

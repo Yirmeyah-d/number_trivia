@@ -58,15 +58,17 @@ void main() {
           .thenAnswer((_) async => Left(failure));
     }
 
-    test(
+    blocTest<NumberTriviaBloc, NumberTriviaState>(
       'should call the InputConverter to validate and convert the string to an unsigned integer',
-      () async {
-        // arrange
+      build: () {
         setUpMockInputConverterAndMockGetConcreteSuccess();
-        // act
-        numberTriviaBloc.add(const GetTriviaForConcreteNumber(tNumberString));
+        return numberTriviaBloc;
+      },
+      act: (bloc) async {
+        bloc.add(const GetTriviaForConcreteNumber(tNumberString));
         await untilCalled(mockInputConverter.stringToUnsignedInteger(any));
-        // assert
+      },
+      verify: (_) {
         verify(mockInputConverter.stringToUnsignedInteger(tNumberString));
       },
     );
@@ -82,15 +84,17 @@ void main() {
       expect: () => [isA<NumberTriviaError>()],
     );
 
-    test(
+    blocTest<NumberTriviaBloc, NumberTriviaState>(
       'should get data from the concrete use case',
-      () async {
-        // arrange
+      build: () {
         setUpMockInputConverterAndMockGetConcreteSuccess();
-        // act
-        numberTriviaBloc.add(GetTriviaForConcreteNumber(tNumberString));
+        return numberTriviaBloc;
+      },
+      act: (bloc) async {
+        bloc.add(const GetTriviaForConcreteNumber(tNumberString));
         await untilCalled(mockGetConcreteNumberTrivia(any));
-        // assert
+      },
+      verify: (_) {
         verify(mockGetConcreteNumberTrivia(Params(number: tNumberParsed)));
       },
     );
@@ -136,16 +140,18 @@ void main() {
   group('GetTriviaForRandomNumber', () {
     final tNumberTrivia = NumberTrivia(number: 1, text: 'Test');
 
-    test(
+    blocTest<NumberTriviaBloc, NumberTriviaState>(
       'should get data from the random use case',
-      () async {
-        // arrange
+      build: () {
         when(mockGetRandomNumberTrivia(any))
             .thenAnswer((_) async => Right(tNumberTrivia));
-        // act
-        numberTriviaBloc.add(GetTriviaForRandomNumber());
+        return numberTriviaBloc;
+      },
+      act: (bloc) async {
+        bloc.add(GetTriviaForRandomNumber());
         await untilCalled(mockGetRandomNumberTrivia(any));
-        // assert
+      },
+      verify: (_) {
         verify(mockGetRandomNumberTrivia(NoParams()));
       },
     );

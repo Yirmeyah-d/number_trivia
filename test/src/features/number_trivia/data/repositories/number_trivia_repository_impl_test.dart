@@ -45,7 +45,7 @@ void main() {
   }
 
   group('getConcreteNumberTrivia', () {
-    final tNumber = 1;
+    const tNumber = 1;
     final tNumberTriviaModel = NumberTriviaModel(number: tNumber, text: "test");
     final NumberTrivia tNumberTrivia = tNumberTriviaModel;
 
@@ -64,6 +64,20 @@ void main() {
     );
 
     runTestsOnline(() {
+      test(
+        'should return server failure when the call to remote data source is unsuccessful',
+        () async {
+          // arrange
+          when(mockRemoteDataSource.getConcreteNumberTrivia(any))
+              .thenThrow(ServerException());
+          // act
+          final result = await repositoryImpl.getConcreteNumberTrivia(tNumber);
+          // assert
+          verify(mockRemoteDataSource.getConcreteNumberTrivia(tNumber));
+          expect(result, equals(Left(ServerFailure())));
+        },
+      );
+
       test(
         'should return remote data when the call to remote data source is successful',
         () async {
@@ -91,21 +105,6 @@ void main() {
           verify(mockLocalDataSource.cacheNumberTrivia(tNumberTriviaModel));
         },
       );
-
-      test(
-        'should return server failure when the call to remote data source is unsuccessful',
-        () async {
-          // arrange
-          when(mockRemoteDataSource.getConcreteNumberTrivia(any))
-              .thenThrow(ServerException());
-          // act
-          final result = await repositoryImpl.getConcreteNumberTrivia(tNumber);
-          // assert
-          verify(mockRemoteDataSource.getConcreteNumberTrivia(tNumber));
-          verifyZeroInteractions(mockLocalDataSource);
-          expect(result, equals(Left(ServerFailure())));
-        },
-      );
     });
 
     runTestsOffline(() {
@@ -118,7 +117,6 @@ void main() {
           // act
           final result = await repositoryImpl.getConcreteNumberTrivia(tNumber);
           // assert
-          verifyZeroInteractions(mockRemoteDataSource);
           verify(mockLocalDataSource.getLastNumberTrivia());
           expect(result, equals(Right(tNumberTrivia)));
         },
@@ -133,7 +131,6 @@ void main() {
           // act
           final result = await repositoryImpl.getConcreteNumberTrivia(tNumber);
           // assert
-          verifyZeroInteractions(mockRemoteDataSource);
           verify(mockLocalDataSource.getLastNumberTrivia());
           expect(result, equals(Left(CacheFailure())));
         },
@@ -198,7 +195,6 @@ void main() {
           final result = await repositoryImpl.getRandomNumberTrivia();
           // assert
           verify(mockRemoteDataSource.getRandomNumberTrivia());
-          verifyZeroInteractions(mockLocalDataSource);
           expect(result, equals(Left(ServerFailure())));
         },
       );
@@ -214,7 +210,6 @@ void main() {
           // act
           final result = await repositoryImpl.getRandomNumberTrivia();
           // assert
-          verifyZeroInteractions(mockRemoteDataSource);
           verify(mockLocalDataSource.getLastNumberTrivia());
           expect(result, equals(Right(tNumberTrivia)));
         },
@@ -229,7 +224,6 @@ void main() {
           // act
           final result = await repositoryImpl.getRandomNumberTrivia();
           // assert
-          verifyZeroInteractions(mockRemoteDataSource);
           verify(mockLocalDataSource.getLastNumberTrivia());
           expect(result, equals(Left(CacheFailure())));
         },

@@ -12,7 +12,7 @@ class NumberTriviaView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('NumberTrivia'),
+        title: const Text('NumberTrivia'),
       ),
       body: SingleChildScrollView(child: buildBody(context)),
     );
@@ -29,7 +29,7 @@ class NumberTriviaView extends StatelessWidget {
               BlocBuilder<NumberTriviaBloc, NumberTriviaState>(
                 builder: (context, state) {
                   if (state is NumberTriviaLoading) {
-                    return LoadingCircle();
+                    return const LoadingCircle();
                   } else if (state is NumberTriviaLoaded) {
                     return TriviaDisplay(
                       numberTrivia: state.trivia,
@@ -39,14 +39,14 @@ class NumberTriviaView extends StatelessWidget {
                       message: state.message,
                     );
                   } else {
-                    return MessageDisplay(
+                    return const MessageDisplay(
                       message: 'Start searching',
                     );
                   }
                 },
               ),
               const SizedBox(height: 20),
-              TriviaControls()
+              const TriviaControls()
             ],
           ),
         ),

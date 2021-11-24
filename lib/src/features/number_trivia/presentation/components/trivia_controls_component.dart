@@ -22,6 +22,7 @@ class _TriviaControlsState extends State<TriviaControls> {
         TextField(
           controller: controller,
           keyboardType: TextInputType.number,
+          autofocus: true,
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             hintText: 'Input a number',
@@ -33,7 +34,7 @@ class _TriviaControlsState extends State<TriviaControls> {
             addConcrete();
           },
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Row(
           children: <Widget>[
             Expanded(
@@ -44,10 +45,10 @@ class _TriviaControlsState extends State<TriviaControls> {
                     primary: Theme.of(context).colorScheme.secondary),
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Expanded(
               child: ElevatedButton(
-                child: Text('Get random trivia'),
+                child: const Text('Get random trivia'),
                 onPressed: addRandom,
               ),
             ),

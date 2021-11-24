@@ -36,9 +36,11 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
     Emitter<NumberTriviaState> emit,
   ) {
     failureOrTrivia.fold(
-      (failure) => emit(NumberTriviaError(
-        message: failure.mapFailureToMessage,
-      )),
+      (failure) => emit(
+        NumberTriviaError(
+          message: failure.mapFailureToMessage,
+        ),
+      ),
       (trivia) => emit(NumberTriviaLoaded(trivia: trivia)),
     );
   }
@@ -46,14 +48,13 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
   void _onGetTriviaForConcreteNumber(
     GetTriviaForConcreteNumber event,
     Emitter<NumberTriviaState> emit,
-  ) {
+  ) async {
     final inputEither =
         inputConverter.stringToUnsignedInteger(event.numberString);
 
-    inputEither.fold(
-      (failure) {
-        emit(const NumberTriviaError(message: INVALID_INPUT_FAILURE_MESSAGE));
-      },
+    await inputEither.fold(
+      (failure) async =>
+          emit(const NumberTriviaError(message: INVALID_INPUT_FAILURE_MESSAGE)),
       // Although the "success case" doesn't interest us with the current test,
       // we still have to handle it somehow.
       (integer) async {
